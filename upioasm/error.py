@@ -1,0 +1,2 @@
+class PIOSyntaxError(SyntaxError):
+    pass
