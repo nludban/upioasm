@@ -1,4 +1,4 @@
-from typing import List, Union, TYPE_CHECKING
+from typing import Union, TYPE_CHECKING
 
 from . import opcodes
 from .error import PIOSyntaxError

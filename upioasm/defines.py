@@ -1,11 +1,11 @@
-from typing import List, Tuple, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from .error import PIOSyntaxError
 
 
 class Defines:
     def __init__(self) -> None:
-        self._tab: List[Tuple[str, Optional[int], bool]] = [ ]
+        self._tab: list[tuple[str, int|None, bool]] = [ ]
 
     def __len__(self):
         return len(self._tab)

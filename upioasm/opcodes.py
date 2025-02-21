@@ -1,5 +1,3 @@
-from typing import Dict
-
 try:
     from micropython import const  # type: ignore[import-not-found]
 except:
@@ -7,7 +5,7 @@ except:
 
 
 op_jmp = const(0b000 << 13)
-jmp_cond: Dict[str, int]  = {
+jmp_cond: dict[str, int]  = {
     '': const(0b000 << 5),
     'always': const(0b000 << 5),
     '!x': const(0b001 << 5),
@@ -20,7 +18,7 @@ jmp_cond: Dict[str, int]  = {
 }
 
 op_wait = const(0b001 << 13)
-wait_source: Dict[str, int] = {
+wait_source: dict[str, int] = {
     'gpio': const(0b00 << 5),
     'pin': const(0b01 << 5),
     'irq': const(0b10 << 5),
@@ -29,7 +27,7 @@ wait_source: Dict[str, int] = {
 }
 
 op_in = const(0b010 << 13)
-in_source: Dict[str, int] = {
+in_source: dict[str, int] = {
     'pins': const(0b000 << 5),
     'x': const(0b001 << 5),
     'y': const(0b010 << 5),
@@ -41,7 +39,7 @@ in_source: Dict[str, int] = {
 }
 
 op_out = const(0b011 << 13)
-out_dest: Dict[str, int] = {
+out_dest: dict[str, int] = {
     'pins': const(0b000 << 5),
     'x': const(0b001 << 5),
     'y': const(0b010 << 5),
@@ -61,7 +59,7 @@ pull_ife = const(1 << 6)
 pull_blk = const(1 << 5)
 
 op_mov = const(0b101 << 13)
-mov_dest: Dict[str, int] = {
+mov_dest: dict[str, int] = {
     'pins': const(0b000 << 5),
     'x': const(0b001 << 5),
     'y': const(0b010 << 5),
@@ -72,7 +70,7 @@ mov_dest: Dict[str, int] = {
     'osr': const(0b111 << 5),
     # todo: rp2350 => pindirs
 }
-mov_source: Dict[str, int] = {
+mov_source: dict[str, int] = {
     # -- op=00 none
     'pins': 0b00_000,
     'x': 0b00_001,
@@ -109,7 +107,7 @@ irq_wait = const(1 << 5)
 # todo: 2350 => prev|next
 
 op_set = const(0b111 << 13)
-set_dest: Dict[str, int] = {
+set_dest: dict[str, int] = {
     'pins': const(0b000 << 5),
     'x': const(0b001 << 5),
     'y': const(0b010 << 5),

@@ -1,6 +1,6 @@
 # rp2.pio.syntax
 
-from typing import Any, Callable, Optional, Union, TYPE_CHECKING
+from typing import Any, Callable, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .assembler import PIOAssembler
@@ -104,8 +104,8 @@ def label(symbol: str='', *, public=False, forward=False):
 #--------------------------------------------------#
 
 class Instruction:
-    _delay: Optional[Value] = None
-    _side: Optional[Value] = None
+    _delay: Value|None = None
+    _side: Value|None = None
     _name = '-setme-'
 
     def __init__(self) -> None:

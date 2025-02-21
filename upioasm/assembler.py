@@ -1,4 +1,4 @@
-from typing import cast, Any, Dict, Generator, List, Optional, Union, TYPE_CHECKING
+from typing import cast, Any, Generator, Union, TYPE_CHECKING
 
 try:
     from micropython import const  # type: ignore[import-not-found]
@@ -36,10 +36,10 @@ class PIOAssembler:
     def __init__(self, pioasm: pioasm) -> None:
         self._pioasm = pioasm
         self._adefs = Defines()
-        self._program: Optional[PIOProgram] = None
-        self._pdefs: Optional[Defines] = None
-        self._ilist: List[Instruction] = [ ]
-        self._options: Dict[str, Any] = { }
+        self._program: PIOProgram|None = None
+        self._pdefs: Defines|None = None
+        self._ilist: list[Instruction] = [ ]
+        self._options: dict[str, Any] = { }
         return
 
     def asm_pio(self, name: str, **kwargs):
@@ -61,12 +61,12 @@ class PIOAssembler:
             return p
         return deco
 
-    def phase_one(self, name: str, kwargs: Dict[str, Any]):
+    def phase_one(self, name: str, kwargs: dict[str, Any]):
         self.program(name, **kwargs)
         self._pdefs = self._adefs.copy(True)
         return self._program
 
-    def import_syntax(self, g: Dict[str, Any]):
+    def import_syntax(self, g: dict[str, Any]):
         for key, val in syntax.__dict__.items():
             # No privates or Types
             if 'a' <= key[0] <= 'z':
@@ -159,7 +159,7 @@ class PIOAssembler:
         self._ilist.append(i)
         return
 
-    def generate(self, pdefs: Defines, ilist: List[Instruction]):
+    def generate(self, pdefs: Defines, ilist: list[Instruction]):
         print('-- defines')
         for d in pdefs._tab:
             print(d)

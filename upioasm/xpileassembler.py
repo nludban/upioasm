@@ -1,4 +1,4 @@
-from typing import Iterator, List, Union
+from typing import Iterator, Union
 
 from .emitter import InstructionVisitor
 
@@ -10,7 +10,7 @@ class AssemblerVisitor(InstructionVisitor):
     """Transpiles instructions to py source"""
 
     def __init__(self) -> None:
-        self._lines: List[str] = [ ]
+        self._lines: list[str] = [ ]
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._lines)
