@@ -28,6 +28,10 @@ class Word(syntax.Instruction):
         super(self).__init__()
 
 
+def _use_label_noop(label: syntax.Label):
+    pass
+
+
 class PIOAssembler:
     def __init__(self, pioasm: pioasm) -> None:
         self._pioasm = pioasm
@@ -125,18 +129,27 @@ class PIOAssembler:
         if '.wrap_target' in self._options:
             raise PIOSyntaxError('.wrap_target already defined')
         self._options['.wrap_target'] = len(self._ilist)
-        return syntax.Label('.wrap_target')
+        return syntax.Label('.wrap_target', _use_label_noop)
 
     def word(self, value: Value):
         Word(value)
 
-    def label(self, name: str, *, public=False) -> syntax.Label:
+    def label(self, name: str='', *, public: bool=False, forward: bool=False) -> syntax.Label:
         if self._pdefs is None:
             raise PIOSyntaxError('label outside of program')
-        if name in self._pdefs:
-            raise PIOSyntaxError('label already defined')
+        if not name:
+            name = 'L%d' % len(self._pdefs)
+        elif name.startswith(';'):
+            forward = True
+        if forward:
+            self._pdefs.declare(name, public)
+            return syntax.Label(name, self._label_used)
         self._pdefs.define(name, len(self._ilist), public)
-        return syntax.Label(name)
+        return syntax.Label(name, _use_label_noop)
+
+    def _label_used(self, label: syntax.Label):
+        cast(Defines, self._pdefs).assign(label._name, len(self._ilist))
+        return
 
     def append(self, i: Instruction) -> None:
         if self._pdefs is None:

@@ -15,6 +15,9 @@ pa = pioasm()
 #@rp2.asm_pio(set_init=rp2.PIO.OUT_LOW)
 @pa.asm_pio('blink_1hz')
 def blink_1hz() -> None:
+    L_loop = label('; some loop')
+    L_test = label(forward=True)
+
     # Cycles: 1 + 1 + 6 + 32 * (30 + 1) = 1000
     with dot_wrap_target():
         irq(0, rel=True)
@@ -34,11 +37,12 @@ def blink_1hz() -> None:
 
         dot_wrap()
 
-    if other := label("other"):
-        jmp(other)
+    with L_loop:
         wait(1).gpio(5)
         in_(x, 7)
+        jmp.not_x(L_test)
         out(y, 8)
+    if L_test:
         push(iffull=True)
         pull(block=False)
         # error: Argument 2 to "mov" has incompatible type "_pc"; expected "MovSourceReg"  [arg-type]
@@ -47,6 +51,7 @@ def blink_1hz() -> None:
         mov(pc, osr.reversed)
         irq.wait(7)
         set(y, 12)
+        jmp(L_loop)
 
 
 # Create the StateMachine with the blink_1hz program, outputting on Pin(25).

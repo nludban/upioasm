@@ -1,6 +1,6 @@
 # rp2.pio.syntax
 
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Callable, Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .assembler import PIOAssembler
@@ -35,13 +35,19 @@ class Label:
         jmp(L50)
     """
 
-    def __init__(self, name):
+    def __init__(self, name: str, callback: Callable[['Label'], None]):
         self._name = name
+        self._callback = callback
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._name
 
+    def __bool__(self):
+        self._callback(self)
+        return True
+
     def __enter__(self):
+        self._callback(self)
         return self
 
     def __exit__(self, t, v, tb):
@@ -92,8 +98,8 @@ def dot_mov_status():
 
 #--------------------------------------------------#
 
-def label(symbol: str, *, public=False):
-    return _asm.label(symbol, public=public)
+def label(symbol: str='', *, public=False, forward=False):
+    return _asm.label(symbol, public=public, forward=forward)
 
 #--------------------------------------------------#
 

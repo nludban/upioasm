@@ -25,7 +25,7 @@ wait_source: Dict[str, int] = {
     'pin': const(0b01 << 5),
     'irq': const(0b10 << 5),
     # 11 - reserved
-    # todo: rp2350 => jmppin
+    # todo: rp2350 => jmppin (rel)
 }
 
 op_in = const(0b010 << 13)
@@ -70,6 +70,7 @@ mov_dest: Dict[str, int] = {
     'pc': const(0b101 << 5),
     'isr': const(0b110 << 5),
     'osr': const(0b111 << 5),
+    # todo: rp2350 => pindirs
 }
 mov_source: Dict[str, int] = {
     # -- op=00 none
