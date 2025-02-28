@@ -191,11 +191,11 @@ class wait(Instruction):
         self._index = gpio_num
 
     def pin(self, pin_num: int):
-        self._source = 'gpio'
+        self._source = 'pin'
         self._index = pin_num
 
     def irq(self, irq_num: int, *, rel=False):
-        self._source = 'gpio'
+        self._source = 'irq'
         self._index = irq_num
         self._rel = rel
 
